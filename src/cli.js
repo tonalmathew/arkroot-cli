@@ -4,8 +4,7 @@ import * as prompts from './utils/prompt';
 
 /* Function to parse cli arguments */
 
-export const parseArgumentsIntoOptions = (rawArgs) => {
-  /*    
+/*    
    
   All parameters that aren't consumed by options
   (commonly referred to as "extra" parameters) are added to result._,
@@ -14,6 +13,7 @@ export const parseArgumentsIntoOptions = (rawArgs) => {
    
   */
 
+export const parseArgumentsIntoOptions = (rawArgs) => {
   const args = arg(
     {
       // Types
