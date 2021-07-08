@@ -5,6 +5,9 @@ import path from 'path';
 import { promisify } from 'util';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import Listr from 'listr';
+import execa from 'execa';
+
 
 /* 
 
@@ -25,6 +28,16 @@ const copyTemplateFiles = async (options) => {
   });
 };
 
+const initGit = async (options) => {
+  const result = await execa('git', ['init'], {
+    cwd: options.targetDirectory,
+  });
+  if (result.failed) {
+    return Promise.reject(new Error('Failed to initialize git'));
+  }
+  return;
+};
+
 export const createProject = async (options) => {
   options = {
     ...options,
@@ -33,7 +46,6 @@ export const createProject = async (options) => {
 
   const __dirname = dirname(fileURLToPath(import.meta.url));
   const currentFileUrl = __dirname;
-  console.log(currentFileUrl);
 
   const templateDir = path.resolve(
     currentFileUrl,
@@ -43,8 +55,6 @@ export const createProject = async (options) => {
   );
   options.templateDirectory = templateDir;
 
-  console.log(templateDir);
-
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
@@ -52,7 +62,21 @@ export const createProject = async (options) => {
     process.exit(1);
   }
 
-  await copyTemplateFiles(options);
+  // List of tasks that should be completed
+
+  const tasks = new Listr([
+    {
+      title: 'Copy project files',
+      task: () => copyTemplateFiles(options),
+    },
+    {
+      title: 'Initialize git',
+      task: () => initGit(options),
+      enabled: () => options.git,
+    },
+  ]);
+
+  await tasks.run();
   console.log('%s Project ready', chalk.green.bold('DONE'));
 
   return true;
