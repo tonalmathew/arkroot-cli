@@ -33,6 +33,7 @@ export const createProject = async (options) => {
 
   const __dirname = dirname(fileURLToPath(import.meta.url));
   const currentFileUrl = __dirname;
+  console.log(currentFileUrl);
 
   const templateDir = path.resolve(
     currentFileUrl,
@@ -40,8 +41,9 @@ export const createProject = async (options) => {
     'templates',
     options.template.toLowerCase()
   );
-
   options.templateDirectory = templateDir;
+
+  console.log(templateDir);
 
   try {
     await access(templateDir, fs.constants.R_OK);
@@ -51,7 +53,7 @@ export const createProject = async (options) => {
   }
 
   await copyTemplateFiles(options);
-
   console.log('%s Project ready', chalk.green.bold('DONE'));
+
   return true;
 };
