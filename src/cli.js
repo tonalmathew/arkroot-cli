@@ -51,7 +51,7 @@ const promptForMissingOptions = async (options) => {
       type: 'list',
       name: 'template',
       message: 'Please choose which project template to use',
-      choices: ['Javascript', 'TypeScript', 'Flutter'],
+      choices: ['Javascript', 'TypeScript', ' Flutter'],
       default: defaultTemplate,
     });
   }

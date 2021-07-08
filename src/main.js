@@ -6,6 +6,16 @@ import { promisify } from 'util';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+/* 
+
+The [promisify] method defines in utilities module of Node.js standard library. 
+It is basically used to convert a method that returns responses using a callback function
+to return responses in a promise object. 
+
+refer: https://www.geeksforgeeks.org/node-js-util-promisify-method/
+
+*/
+
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
@@ -21,12 +31,8 @@ export const createProject = async (options) => {
     targetDirectory: options.targetDirectory || process.cwd(),
   };
 
-  const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(fileURLToPath(import.meta.url));
-
   const currentFileUrl = __dirname;
-
-  console.log(currentFileUrl);
 
   const templateDir = path.resolve(
     currentFileUrl,
@@ -35,18 +41,15 @@ export const createProject = async (options) => {
     options.template.toLowerCase()
   );
 
-  console.log(templateDir);
   options.templateDirectory = templateDir;
 
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error(err);
     console.error('%s Invalid template name', chalk.red.bold('ERROR'));
     process.exit(1);
   }
 
-  console.log('Copy project files');
   await copyTemplateFiles(options);
 
   console.log('%s Project ready', chalk.green.bold('DONE'));
