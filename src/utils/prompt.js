@@ -1,10 +1,8 @@
 import inquirer from 'inquirer';
+import constants from '../constants/constants';
 
 export const promptForMissingOptions = async (options) => {
-  const defaultTemplate = 'Flutter';
-
   // if [skipPrompts] is true default template will be generated
-
   if (options.skipPrompts) {
     return {
       ...options,
@@ -21,7 +19,14 @@ export const promptForMissingOptions = async (options) => {
       name: 'template',
       message: 'Please choose which project template to use',
       choices: ['Javascript', 'TypeScript', 'Flutter'],
-      default: defaultTemplate,
+      default: constants.defaultTemplate,
+    });
+
+    questions.push({
+      type: 'input',
+      name: 'projectName',
+      message: 'Please type your project name',
+      default: constants.defaultProjectName,
     });
   }
 
@@ -40,5 +45,6 @@ export const promptForMissingOptions = async (options) => {
     ...options,
     template: options.template || answers.template,
     git: options.git || answers.git,
+    projectName: answers.projectName || constants.defaultProjectName,
   };
 };
