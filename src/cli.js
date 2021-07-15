@@ -5,15 +5,16 @@ import arg from 'arg';
 import updateNotifier from 'update-notifier';
 import envinfo from 'envinfo';
 import leven from 'leven';
+import chalk from 'chalk';
 
-
-import { createProject } from './main';
+import { init } from './commands/init/index';
 import * as prompts from './utils/prompt';
 import * as logger from './utils/logger';
 import { commander } from './helpers/commander';
 
 import pkg from '../package'
 import { program } from 'commander';
+
 
 
 
@@ -34,7 +35,7 @@ commander.version(pkg.version).usage('<command> [options]');
 
 commander.command('init <appname>')
     .description('Scaffolds a Flutter project in the current path')
-    .action(() => logger.info("hai"));
+    .action(init);
 
 
 commander
