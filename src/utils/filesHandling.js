@@ -1,15 +1,8 @@
 import ncp from 'ncp';
 import fs from 'fs';
 import { promisify } from 'util';
-/* 
 
-The [promisify] method defines in utilities module of Node.js standard library. 
-It is basically used to convert a method that returns responses using a callback function
-to return responses in a promise object. 
-
-refer: https://www.geeksforgeeks.org/node-js-util-promisify-method/
-
-*/
+import * as logger from '../utils/logger';
 
 const copy = promisify(ncp);
 const mkdir = promisify(fs.mkdir);
@@ -25,4 +18,27 @@ export const copyTemplateFiles = async (options) => {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
   });
+};
+
+export const checkIfAFolderExist = async (folderName) => {
+  try {
+    if (fs.existsSync(folderName)) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    logger.error('\nError: Something went wrong!!\n');
+    return false;
+  }
+};
+
+export const createDirectory = async (dirName) => {
+  try {
+    fs.mkdirSync(dirName);
+    return true;
+  } catch (error) {
+    logger.error('\nError: Failed to create project folder!!\n');
+    process.exit(1);
+  }
 };
