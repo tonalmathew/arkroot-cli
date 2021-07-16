@@ -65,33 +65,3 @@ commander.parse(process.argv);
 if (!commander.args.length) {
   commander.help();
 }
-
-// export const parseArgumentsIntoOptions = (rawArgs) => {
-//   const args = arg(
-//     {
-//       // Types
-//       '--git': Boolean,
-//       '--yes': Boolean,
-//       '--install': Boolean,
-
-//       // Aliases
-//       '-g': '--git',
-//       '-y': '--yes',
-//       '-i': '--install',
-//     },
-//     { argv: rawArgs.slice(2) }
-//   );
-
-//   return {
-//     skipPrompts: args['--yes'] || false,
-//     git: args['--git'] || false,
-//     template: args._[0],
-//     runInstall: args['--install'] || false,
-//   };
-// };
-
-// export const cli = async (args) => {
-//   let options = parseArgumentsIntoOptions(args);
-//   options = await prompts.promptForMissingOptions(options);
-//   await createProject(options);
-// }
