@@ -48,8 +48,9 @@ const showIntroduction = async (msg) => {
 
 /**
  * Scaffolds flutter based app
- *
- * @param appName - specifies app name
+ * 
+ * @function {default} default function wrapping init functionality
+ * @param {appName} appName - specifies app name
  */
 
 export default async (appName) => {
@@ -57,6 +58,8 @@ export default async (appName) => {
 
   const argument = process.argv[4];
 
-  const hasMultipleProjectNameArguments = argument && !argument.startsWith('-');
+  const hasMultipleProjectNameArguments =
+    (argument && !argument.startsWith('-')) || false;
+
   console.log(hasMultipleProjectNameArguments);
 };
