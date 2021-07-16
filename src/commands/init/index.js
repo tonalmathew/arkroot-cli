@@ -8,12 +8,12 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import figlet from 'figlet';
 import Listr from 'listr';
+import process from 'process';
 
-import * as gitHelpers from '../git/index';
-import * as filehelpers from '../../utils/filesHandling';
+import * as gitHelper from '../git/index';
+import * as fsHelper from '../../utils/filesHandling';
 import * as logger from '../../utils/logger';
-
-let projectPathRelative;
+import * as promptHelper from '../../utils/prompt';
 
 const access = promisify(fs.access);
 
@@ -26,7 +26,7 @@ const access = promisify(fs.access);
 const intialCommit = () => {
   // Commands to be executed serially
   const commands = ['init', 'add.', `commitn -m "Init" -m "ARKROOT-CLI"`];
-  gitHelpers.executeByOrder(commands, projectPathRelative);
+  gitHelper.executeByOrder(commands, projectPathRelative);
 };
 
 /**
@@ -48,7 +48,7 @@ const showIntroduction = async (msg) => {
 
 /**
  * Scaffolds flutter based app
- * 
+ *
  * @function {default} default function wrapping init functionality
  * @param {appName} appName - specifies app name
  */
@@ -56,10 +56,43 @@ const showIntroduction = async (msg) => {
 export default async (appName) => {
   showIntroduction(`Arkroot-Cli`);
 
+  let relativeProjectPath;
+
   const argument = process.argv[4];
 
   const hasMultipleProjectNameArguments =
     (argument && !argument.startsWith('-')) || false;
 
-  console.log(hasMultipleProjectNameArguments);
+  let isCurrentDir = false;
+
+  if (appName === '.') {
+    isCurrentDir = true;
+    appName = path.basename(process.cwd());
+  }
+
+  if (hasMultipleProjectNameArguments) {
+    logger.error(
+      '\nError: Please provide only one argument as the directory name!!'
+    );
+    process.exit(1);
+  }
+
+  if (isCurrentDir) {
+    const files = fs.readdirSync('.');
+    if (files.length) {
+      logger.error(`\n It seems the current directory isn't empty 😟.\n`);
+      process.exit(1);
+    }
+  }
+
+  if (!isCurrentDir && (await fsHelper.checkIfAFolderExist(appName))) {
+    logger.error(
+      `\n Error: Directory ${chalk.cyan.bold(appName)} already exists in path!`
+    );
+    process.exit(1);
+  }
+
+  relativeProjectPath = isCurrentDir ? '.' : appName;
+
+  const { template } = await promptHelper.promptForChoosingProject();
 };
