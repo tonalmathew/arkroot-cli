@@ -4,10 +4,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import path from 'path';
 import { promisify } from 'util';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import figlet from 'figlet';
-import Listr from 'listr';
 import process from 'process';
 
 import * as gitHelper from '../git/index';
@@ -25,7 +22,7 @@ const access = promisify(fs.access);
 
 const intialCommit = () => {
   // Commands to be executed serially
-  const commands = ['init', 'add.', `commitn -m "Init" -m "ARKROOT-CLI"`];
+  const commands = ['init', 'add.', `commit -m "Init" -m "ARKROOT-CLI"`];
   gitHelper.executeByOrder(commands, projectPathRelative);
 };
 
@@ -57,12 +54,9 @@ export default async (appName) => {
   showIntroduction(`Arkroot-Cli`);
 
   let relativeProjectPath;
-
   const argument = process.argv[4];
-
   const hasMultipleProjectNameArguments =
     (argument && !argument.startsWith('-')) || false;
-
   let isCurrentDir = false;
 
   if (appName === '.') {
@@ -87,7 +81,9 @@ export default async (appName) => {
 
   if (!isCurrentDir && (await fsHelper.checkIfAFolderExist(appName))) {
     logger.error(
-      `\n Error: Directory ${chalk.cyan.bold(appName)} already exists in path!`
+      `\n Error: Directory ${chalk.cyan.bold(
+        appName
+      )} already exists in path😟!`
     );
     process.exit(1);
   }
@@ -95,4 +91,6 @@ export default async (appName) => {
   relativeProjectPath = isCurrentDir ? '.' : appName;
 
   const { template } = await promptHelper.promptForChoosingProject();
+
+  console.log(template);
 };

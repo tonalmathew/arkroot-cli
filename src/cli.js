@@ -1,19 +1,15 @@
 'use strict';
 
-// Third party modules
-import arg from 'arg';
+// Third party modules 
 import updateNotifier from 'update-notifier';
-import envinfo from 'envinfo';
 import leven from 'leven';
 import chalk from 'chalk';
 
 import init from './commands/init/index';
-import * as prompts from './utils/prompt';
 import * as logger from './utils/logger';
 import { commander } from './helpers/commander';
-
 import pkg from '../package';
-import { program } from 'commander';
+import { info } from './helpers/tasks';
 
 updateNotifier({ pkg }).notify();
 
@@ -39,17 +35,7 @@ commander
 commander
   .command('info')
   .description('Prints debugging information about the local environment')
-  .action(() => {
-    console.log(chalk.bold('\nEnvironment Info:'));
-    envinfo
-      .run({
-        System: ['OS', 'CPU'],
-        Binaries: ['Node', 'Yarn', 'npm'],
-        Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-        npmGlobalPackages: ['arkroot-cli'],
-      })
-      .then(console.log);
-  });
+  .action(info);
 
 // Validation for unknown commands
 commander.on('command:*', ([cmd]) => {
