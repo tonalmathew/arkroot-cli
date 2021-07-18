@@ -4,15 +4,18 @@ import fs from 'fs';
 import chalk from 'chalk';
 import path from 'path';
 import { promisify } from 'util';
-import figlet from 'figlet';
 import process from 'process';
 
 import * as gitHelper from '../git/index';
 import * as fsHelper from '../../utils/filesHandling';
 import * as logger from '../../utils/logger';
 import * as promptHelper from '../../utils/prompt';
+import * as app from '../../utils/app';
 
 const access = promisify(fs.access);
+
+let relativeProjPath;
+let projectConfig = {};
 
 /**
  * creates an initial commit
@@ -26,21 +29,8 @@ const intialCommit = () => {
   gitHelper.executeByOrder(commands, projectPathRelative);
 };
 
-/**
- * Shows application name
- *
- * @param {msg} msg - App name
- * @return {void} -  returns nothing
- */
-
-const showIntroduction = async (msg) => {
-  console.log(
-    figlet.textSync(msg, {
-      horizontalLayout: 'default',
-      verticalLayout: 'default',
-      whitespaceBreak: true,
-    })
-  );
+const fetchTemplate = async (config) => {
+  
 };
 
 /**
@@ -51,9 +41,8 @@ const showIntroduction = async (msg) => {
  */
 
 export default async (appName) => {
-  showIntroduction(`Arkroot-Cli`);
+  app.showIntroduction();
 
-  let relativeProjectPath;
   const argument = process.argv[4];
   const hasMultipleProjectNameArguments =
     (argument && !argument.startsWith('-')) || false;
@@ -88,9 +77,9 @@ export default async (appName) => {
     process.exit(1);
   }
 
-  relativeProjectPath = isCurrentDir ? '.' : appName;
+  relativeProjPath = isCurrentDir ? '.' : appName;
 
   const { template } = await promptHelper.promptForChoosingProject();
-
-  console.log(template);
+  projectConfig.template = template;
+  projectConfig.appName = appName;
 };

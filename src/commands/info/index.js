@@ -3,7 +3,7 @@
 import envinfo from 'envinfo';
 import * as logger from '../../utils/logger';
 
-export const fetchOSInfo = () => {
+export const fetchOSInfo = async () => {
   envinfo
     .run({
       System: ['OS', 'CPU'],
@@ -12,7 +12,7 @@ export const fetchOSInfo = () => {
       npmGlobalPackages: ['arkroot-cli'],
     })
     .then((env) => {
-      logger.info('\nEnvironment Info: \n');
+      logger.info(`\n  Environment Info: `);
       console.log(env);
     });
 };
