@@ -10,6 +10,7 @@ import * as logger from './utils/logger';
 import { commander } from './helpers/commander';
 import pkg from '../package';
 import { info } from './helpers/tasks';
+import * as app from './utils/app';
 
 updateNotifier({ pkg }).notify();
 
@@ -49,5 +50,6 @@ commander.parse(process.argv);
 
 // Shows up help if no arguments were provided.
 if (!commander.args.length) {
+  app.showIntroduction();
   commander.help();
 }
