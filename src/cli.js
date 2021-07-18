@@ -1,6 +1,6 @@
 'use strict';
 
-// Third party modules 
+// Third party modules
 import updateNotifier from 'update-notifier';
 import leven from 'leven';
 import chalk from 'chalk';
