@@ -1,14 +1,11 @@
-let constants = {
-  /**
-   * @type {String} appName - App Name
-   * @type {String} tagLine - Tagline for the app
-   * */
+/**
+ * @type {String} appName - App Name
+ * @type {String} tagLine - Tagline for the app
+ *
+ */
 
-  appName: 'Arkroot-Cli',
-  tagLine: 'Faster way to setup your projects 🚀',
+export const appName = 'Arkroot-Cli';
+export const tagLine = 'Faster way to setup your projects 🚀\n';
 
-  defaultTemplate: 'Flutter',
-  defaultProjectName: 'Project',
-};
-
-export default constants;
+export const defaultTemplate = 'Flutter';
+export const defaultProjectName = 'Project';

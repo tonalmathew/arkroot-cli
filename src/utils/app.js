@@ -1,6 +1,7 @@
 import figlet from 'figlet';
+
 import * as logger from './logger';
-import constants from '../constants/constants';
+import * as constants from '../constants/constants';
 
 /**
  * Shows application name

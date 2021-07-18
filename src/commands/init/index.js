@@ -29,6 +29,10 @@ const intialCommit = () => {
   gitHelper.executeByOrder(commands, projectPathRelative);
 };
 
+const fetchTemplate = async (config) => {
+  
+};
+
 /**
  * Scaffolds flutter based app
  *
@@ -76,4 +80,6 @@ export default async (appName) => {
   relativeProjPath = isCurrentDir ? '.' : appName;
 
   const { template } = await promptHelper.promptForChoosingProject();
+  projectConfig.template = template;
+  projectConfig.appName = appName;
 };

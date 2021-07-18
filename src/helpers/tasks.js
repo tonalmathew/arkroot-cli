@@ -6,11 +6,12 @@ import * as logger from '../utils/logger';
 import { fetchOSInfo } from '../commands/info';
 
 export const info = async () => {
+  console.log('\n');
   let tasks = new Listr([
     {
       title: 'Fetching Environment Info',
-      task: () => {
-        return fetchOSInfo();
+      task: async () => {
+        return await fetchOSInfo();
       },
     },
   ]);

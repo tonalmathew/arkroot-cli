@@ -1,6 +1,5 @@
 import inquirer from 'inquirer';
-import constants from '../constants/constants';
-
+import * as constants from '../constants/constants';
 
 export const promptForChoosingProject = async () => {
   const template = await inquirer.prompt({
