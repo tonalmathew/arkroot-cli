@@ -12,7 +12,6 @@ import * as logger from '../../utils/logger';
 import * as promptHelper from '../../utils/prompt';
 import * as app from '../../utils/app';
 
-const access = promisify(fs.access);
 
 let relativeProjPath;
 let projectConfig = {};
@@ -30,7 +29,7 @@ const intialCommit = () => {
 };
 
 const fetchTemplate = async (config) => {
-  
+  await validateInstallation('git help -g');
 };
 
 /**
