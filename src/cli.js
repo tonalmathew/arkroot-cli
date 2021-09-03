@@ -42,7 +42,6 @@ program
   .description('Prints debugging information about the local environment')
   .action(info);
 
-// Validation for unknown commands
 program.on('command:*', ([cmd]) => {
   program.outputHelp();
   logger.error(`\n Unknown command ${chalk.yellow(cmd)}.\n`);
@@ -52,7 +51,6 @@ program.on('command:*', ([cmd]) => {
 
 program.parse(process.argv);
 
-// Shows up help if no arguments were provided.
 if (!program.args.length) {
   app.showIntroduction();
 }
