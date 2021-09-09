@@ -12,7 +12,6 @@ import * as logger from '../../utils/logger';
 import * as promptHelper from '../../utils/prompt';
 import * as app from '../../utils/app';
 
-
 let relativeProjPath;
 let projectConfig = {};
 
@@ -79,6 +78,12 @@ export default async (appName) => {
   relativeProjPath = isCurrentDir ? '.' : appName;
 
   const { template } = await promptHelper.promptForChoosingProject();
+
+  // Create a directory in the current path with the given name
+  if (!isCurrentDir) {
+    fs.mkdirSync(appName);
+  }
+  
   projectConfig.template = template;
   projectConfig.appName = appName;
 };
