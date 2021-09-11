@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import { isLinux, isWin } from '../constants/constants';
 import Spinner from './spinner';
 
-const spinner = Spinner();
+const spinner = new Spinner();
 
 /**
  * Shows installation information

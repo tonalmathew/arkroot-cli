@@ -11,8 +11,10 @@ import * as fsHelper from '../../utils/filesHandling';
 import * as logger from '../../utils/logger';
 import * as promptHelper from '../../utils/prompt';
 import * as app from '../../utils/app';
+import { validateInstallation } from '../../utils/validate';
+import { copyDirSync } from '../../helpers/helpers';
 
-let relativeProjPath;
+let projectPathRelative;
 let projectConfig = {};
 
 /**
@@ -27,8 +29,23 @@ const intialCommit = () => {
   gitHelper.executeByOrder(commands, projectPathRelative);
 };
 
-const fetchTemplate = async (config) => {
+const fetchTemplate = async (template) => {
   await validateInstallation('git help -g');
+
+  // Holds reference to the destination path
+  const destination = path.resolve(projectPathRelative);
+
+  // Holds reference to the path where starter templates reside
+  const templatePath = path.join(__dirname, '..', '..', '..', 'templates');
+
+  // Copy the starter template to user's current working directory
+  copyDirSync(path.join(templatePath, template), destination);
+
+  // Rename the resultant directory to client
+  const renameFromPath = path.join(destination, template);
+  const renameToPath = path.join(destination, projectConfig.appName);
+
+  fs.renameSync(renameFromPath, renameToPath);
 };
 
 /**
@@ -44,6 +61,7 @@ export default async (appName) => {
   const argument = process.argv[4];
   const hasMultipleProjectNameArguments =
     (argument && !argument.startsWith('-')) || false;
+
   let isCurrentDir = false;
 
   if (appName === '.') {
@@ -75,7 +93,7 @@ export default async (appName) => {
     process.exit(1);
   }
 
-  relativeProjPath = isCurrentDir ? '.' : appName;
+  projectPathRelative = isCurrentDir ? '.' : appName;
 
   const { template } = await promptHelper.promptForChoosingProject();
 
@@ -83,7 +101,9 @@ export default async (appName) => {
   if (!isCurrentDir) {
     fs.mkdirSync(appName);
   }
-  
+
   projectConfig.template = template;
   projectConfig.appName = appName;
+
+  fetchTemplate(projectConfig.template);
 };
