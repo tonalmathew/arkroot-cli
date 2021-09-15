@@ -18,6 +18,34 @@ let projectPathRelative;
 let projectConfig = {};
 
 /**
+ * Logs the further actions to be performed
+ *
+ * @returns {Void}
+ */
+
+const showInstructions = () => {
+  const isCurrentDir = projectPathRelative === '.';
+
+  let userCommandInstruction;
+  if (projectConfig.template == 'Flutter') {
+    userCommandInstruction = chalk.green.bold('flutter run');
+  }
+
+  if (!isCurrentDir) {
+    userCommandInstruction = `${chalk.green.bold(
+      `cd ${projectPathRelative}`
+    )} && ${userCommandInstruction}`;
+  }
+
+  console.log();
+  console.log();
+  logger.info(`You're all set`);
+  logger.info(`Now, just type in ${userCommandInstruction}`);
+
+  // makeInitialCommit();
+};
+
+/**
  * creates an initial commit
  *
  * @returns {void}
@@ -46,6 +74,8 @@ const fetchTemplate = async (template) => {
   const renameToPath = path.join(destination, projectConfig.appName);
 
   fs.renameSync(renameFromPath, renameToPath);
+
+  showInstructions();
 };
 
 /**

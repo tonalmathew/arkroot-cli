@@ -14,6 +14,7 @@ export let createDirectory = async (newDirectory) => {
   });
 };
 
+
 export const copyTemplateFiles = async (options) => {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
